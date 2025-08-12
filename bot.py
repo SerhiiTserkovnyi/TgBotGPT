@@ -44,6 +44,12 @@ async def date(update, context):
         "date_hardy": "Том Харді",
     })
 
+async def date_button(update, context):
+    query = update.callback_query.data
+    await update.callback_query.answer()
+    await send_photo(update, context, query)
+    await send_text(update, context, "Гарний вибір.\uD83D\uDE05 Ваша задача запросити дівчину/хлопця на побачення за 5 повідомлень!♥\uFE0F")
+
 async def hello(update, context):
     if dialog.mode == "gpt":
         await  gpt_dialog(update, context)
@@ -59,5 +65,5 @@ app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("gpt", gpt))
 app.add_handler(CommandHandler("date", date))
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, hello))
-# app.add_handler(CallbackQueryHandler(buttons_handler))
+app.add_handler(CallbackQueryHandler(date_button, pattern="^date_.*"))
 app.run_polling()
