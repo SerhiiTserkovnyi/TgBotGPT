@@ -67,6 +67,13 @@ async def message(update, context):
         "message_date": "Запросити на побачення"
     })
 
+async def message_dialog(update, context):
+    text = update.message.text
+    dialog.list.append(text)
+
+async def message_button(update, context):
+    pass
+
 async def hello(update, context):
     if dialog.mode == "gpt":
         await  gpt_dialog(update, context)
@@ -75,6 +82,7 @@ async def hello(update, context):
 
 dialog = Dialog()
 dialog.mode = None
+dialog.list = []
 
 chatgpt = ChatGptService(token="javcgkmmT5+ss2PGB5P+5fVNiZS1Y37csPkiyneYEQqWgFZwiUCeCBH1bE5yi4f+9LpUxs9/KCp4PU/t17wLL6HyHca5lQCATBbNq2c2UQl36EgxotUYme4TY2cnEx3RJKz7nRE4Grj3BbRc+EhDC8XswylqW+4gVHxZgocpzyvfRMk35So5p2DBP12VlJ8gvCQlYiEGTGWta6aQCnlKH34/yug2q7yoXf0HJWQ4p3Rf3C068=")
 
@@ -85,4 +93,5 @@ app.add_handler(CommandHandler("date", date))
 app.add_handler(CommandHandler("message", message))
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, hello))
 app.add_handler(CallbackQueryHandler(date_button, pattern="^date_.*"))
+app.add_handler(CallbackQueryHandler(message_button, pattern="^message_.*"))
 app.run_polling()
