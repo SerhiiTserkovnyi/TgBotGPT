@@ -49,6 +49,8 @@ async def date_button(update, context):
     await update.callback_query.answer()
     await send_photo(update, context, query)
     await send_text(update, context, "Гарний вибір.\uD83D\uDE05 Ваша задача запросити дівчину/хлопця на побачення за 5 повідомлень!♥\uFE0F")
+    prompt = load_prompt(query)
+    chatgpt.set_prompt(prompt)
 
 async def date_dialog(update, context):
     text = update.message.text
