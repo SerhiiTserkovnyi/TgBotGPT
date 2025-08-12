@@ -55,11 +55,13 @@ async def date_button(update, context):
 async def date_dialog(update, context):
     text = update.message.text
     answer = await chatgpt.add_message(text)
+    await send_text(update, context, answer)
 
 async def hello(update, context):
     if dialog.mode == "gpt":
         await  gpt_dialog(update, context)
-
+    elif dialog.mode == "date":
+        await date_dialog(update, context)
 
 dialog = Dialog()
 dialog.mode = None
