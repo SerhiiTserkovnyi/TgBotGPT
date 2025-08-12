@@ -58,6 +58,15 @@ async def date_dialog(update, context):
     answer = await chatgpt.add_message(text)
     await my_message.edit_text(answer)
 
+async def message(update, context):
+    dialog.mode = "message"
+    msg = load_message("message")
+    await  send_photo(update, context, "message")
+    await send_text_buttons(update, context, msg, {
+        "message_next": "Написати повідомлення",
+        "message_date": "Запросити на побачення"
+    })
+
 async def hello(update, context):
     if dialog.mode == "gpt":
         await  gpt_dialog(update, context)
@@ -73,6 +82,7 @@ app = ApplicationBuilder().token(TOKEN).build()
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("gpt", gpt))
 app.add_handler(CommandHandler("date", date))
+app.add_handler(CommandHandler("message", message))
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, hello))
 app.add_handler(CallbackQueryHandler(date_button, pattern="^date_.*"))
 app.run_polling()
