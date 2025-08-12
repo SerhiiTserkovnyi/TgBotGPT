@@ -50,6 +50,10 @@ async def date_button(update, context):
     await send_photo(update, context, query)
     await send_text(update, context, "Гарний вибір.\uD83D\uDE05 Ваша задача запросити дівчину/хлопця на побачення за 5 повідомлень!♥\uFE0F")
 
+async def date_dialog(update, context):
+    text = update.message.text
+    answer = await chatgpt.add_message(text)
+
 async def hello(update, context):
     if dialog.mode == "gpt":
         await  gpt_dialog(update, context)
