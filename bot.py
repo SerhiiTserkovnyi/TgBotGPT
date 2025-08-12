@@ -36,7 +36,13 @@ async def date(update, context):
     dialog.mode = "date"
     msg = load_message("date")
     await send_photo(update, context, "date")
-    await send_text(update, context, msg)
+    await send_text_buttons(update, context, msg, {
+        "date_grande": "Аріана Гранде",
+        "date_robbie": "Марго Роббі",
+        "date_zendaya": "Зендея",
+        "date_gosling": "Райан Гослінг",
+        "date_hardy": "Том Харді",
+    })
 
 async def hello(update, context):
     if dialog.mode == "gpt":
