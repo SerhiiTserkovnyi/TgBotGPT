@@ -66,19 +66,30 @@ async def message(update, context):
         "message_next": "Написати повідомлення",
         "message_date": "Запросити на побачення"
     })
+    dialog.list.clear()
 
 async def message_dialog(update, context):
     text = update.message.text
     dialog.list.append(text)
 
 async def message_button(update, context):
-    pass
+    query = update.callback_query.data
+    await update.callback_query.answer()
+
+    prompt = load_prompt(query)
+    user_chat_history = "\n\n".join(dialog.list)
+
+    my_message = await send_text(update, context, "Думаю над варіантами...")
+    answer = await chatgpt.send_question(prompt, user_chat_history)
+    await my_message.edit_text(answer)
 
 async def hello(update, context):
     if dialog.mode == "gpt":
         await  gpt_dialog(update, context)
     elif dialog.mode == "date":
         await date_dialog(update, context)
+    elif dialog.mode == "message":
+        await message_dialog(update,context)
 
 dialog = Dialog()
 dialog.mode = None
