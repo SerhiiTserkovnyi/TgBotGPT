@@ -32,6 +32,12 @@ async def gpt_dialog(update, context):
     answer = await chatgpt.send_question(prompt, text)
     await send_text(update, context, answer)
 
+async def date(update, context):
+    dialog.mode = "date"
+    msg = load_message("date")
+    await send_photo(update, context, "date")
+    await send_text(update, context, msg)
+
 async def hello(update, context):
     if dialog.mode == "gpt":
         await  gpt_dialog(update, context)
@@ -45,6 +51,7 @@ chatgpt = ChatGptService(token="javcgkmmT5+ss2PGB5P+5fVNiZS1Y37csPkiyneYEQqWgFZw
 app = ApplicationBuilder().token(TOKEN).build()
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("gpt", gpt))
+app.add_handler(CommandHandler("date", date))
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, hello))
 # app.add_handler(CallbackQueryHandler(buttons_handler))
 app.run_polling()
