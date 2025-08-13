@@ -84,6 +84,13 @@ async def message_button(update, context):
     await my_message.edit_text(answer)
 
 async def profile(update, context):
+    dialog.mode = "profile"
+    msg = load_message("profile")
+    await  send_photo(update, context, "profile")
+    await send_text(update, context, msg)
+    await send_text(update, context, "Скільки вам років?")
+
+async def profile_dialog(update, context):
     pass
 
 async def hello(update, context):
@@ -93,6 +100,8 @@ async def hello(update, context):
         await date_dialog(update, context)
     elif dialog.mode == "message":
         await message_dialog(update,context)
+    elif dialog.mode == "profile":
+        await profile_dialog(update, context)
 
 dialog = Dialog()
 dialog.mode = None
@@ -105,6 +114,7 @@ app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("gpt", gpt))
 app.add_handler(CommandHandler("date", date))
 app.add_handler(CommandHandler("message", message))
+app.add_handler(CommandHandler("profile", profile))
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, hello))
 app.add_handler(CallbackQueryHandler(date_button, pattern="^date_.*"))
 app.add_handler(CallbackQueryHandler(message_button, pattern="^message_.*"))
