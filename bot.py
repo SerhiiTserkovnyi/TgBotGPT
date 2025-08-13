@@ -83,6 +83,9 @@ async def message_button(update, context):
     answer = await chatgpt.send_question(prompt, user_chat_history)
     await my_message.edit_text(answer)
 
+async def profile(update, context):
+    pass
+
 async def hello(update, context):
     if dialog.mode == "gpt":
         await  gpt_dialog(update, context)
