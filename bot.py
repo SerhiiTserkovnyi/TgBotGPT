@@ -89,6 +89,7 @@ async def profile(update, context):
     await  send_photo(update, context, "profile")
     await send_text(update, context, msg)
     dialog.user.clear()
+    dialog.counter = 0
     await send_text(update, context, "Скільки вам років?")
 
 async def profile_dialog(update, context):
