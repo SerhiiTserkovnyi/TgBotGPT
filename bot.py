@@ -88,10 +88,31 @@ async def profile(update, context):
     msg = load_message("profile")
     await  send_photo(update, context, "profile")
     await send_text(update, context, msg)
+    dialog.user.clear()
     await send_text(update, context, "Скільки вам років?")
 
 async def profile_dialog(update, context):
-    pass
+    text = update.message.text
+    dialog.counter +=1
+    if dialog.counter == 1:
+        dialog.user["age"] = text
+        await send_text(update, context, "Ким ви працюєте?")
+    if dialog.counter == 2:
+        dialog.user["occupation"] = text
+        await send_text(update, context, "Яке у вас хобі?")
+    if dialog.counter == 3:
+        dialog.user["hobby"] = text
+        await send_text(update, context, "Що вам не подобається в людях?")
+    if dialog.counter == 4:
+        dialog.user["annoys"] = text
+        await send_text(update, context, "Мета знайомства?")
+    if dialog.counter == 5:
+        dialog.user["goals"] = text
+        prompt = load_prompt("profile")
+        user_info = dialog_user_info_to_str(dialog.user)
+        my_message = await send_text(update, context, "ChatGPT генерує ваш профіль. Зачекайте кілька секунд")
+        answer = await chatgpt.send_question(prompt, user_info)
+        await my_message.edit_text(answer)
 
 async def hello(update, context):
     if dialog.mode == "gpt":
@@ -106,6 +127,8 @@ async def hello(update, context):
 dialog = Dialog()
 dialog.mode = None
 dialog.list = []
+dialog.user = {}
+dialog.counter = 0
 
 chatgpt = ChatGptService(token="javcgkmmT5+ss2PGB5P+5fVNiZS1Y37csPkiyneYEQqWgFZwiUCeCBH1bE5yi4f+9LpUxs9/KCp4PU/t17wLL6HyHca5lQCATBbNq2c2UQl36EgxotUYme4TY2cnEx3RJKz7nRE4Grj3BbRc+EhDC8XswylqW+4gVHxZgocpzyvfRMk35So5p2DBP12VlJ8gvCQlYiEGTGWta6aQCnlKH34/yug2q7yoXf0HJWQ4p3Rf3C068=")
 
